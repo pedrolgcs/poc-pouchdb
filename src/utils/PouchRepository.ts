@@ -3,7 +3,7 @@ import { pouchDB } from '../services/pouchdb';
 // types
 import { User, Situation, UserSchema } from '../interfaces/user';
 
-const LIMIT = 5;
+const LIMIT = 2;
 
 class PouchRepository {
   public static async create(data: User) {

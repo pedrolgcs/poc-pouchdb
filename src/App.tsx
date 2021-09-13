@@ -1,5 +1,8 @@
 // pages
-import {Home} from './pages/Home';
+import { Home } from './pages/Home';
+
+// schedules
+import './schedules/users';
 
 function App() {
   return (
