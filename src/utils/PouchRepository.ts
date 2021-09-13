@@ -23,7 +23,6 @@ class PouchRepository {
     const updatedUser = await pouchDB.put({
       ...user,
       _rev: user._rev,
-      situation: 'success',
     });
 
     return updatedUser;

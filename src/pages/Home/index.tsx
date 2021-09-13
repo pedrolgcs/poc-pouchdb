@@ -25,24 +25,14 @@ const Home: React.FC = () => {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    // generate fake user
     const user = Fake.user();
 
     try {
       const response = await PouchRepository.create(user);
-      const loadData = await PouchRepository.findById(response.id);
-
-      return setUsers([...users, loadData]);
+      const loadUser = await PouchRepository.findById(response.id);
+      return setUsers([...users, loadUser]);
     } catch (error) {
       return console.log(error);
-    }
-  }
-
-  async function handleUpdate(user: UserSchema) {
-    try {
-      await PouchRepository.update(user);
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -74,9 +64,6 @@ const Home: React.FC = () => {
               </li>
               <li>
                 <span>Trocar situação: </span>
-                <button type="button" onClick={() => handleUpdate(user)}>
-                  Processar
-                </button>
               </li>
               <hr />
             </div>
