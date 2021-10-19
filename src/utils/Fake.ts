@@ -1,11 +1,12 @@
 import faker from 'faker';
 
+import { Gender } from '../interfaces/user';
 class Fake {
   public static user() {
     return {
       name: faker.name.findName(),
       email: faker.internet.email(),
-      phone: faker.phone.phoneNumber(),
+      gender: Math.floor(Math.random() * 2) === 0 ? 'male' : 'female' as Gender,
     };
   }
 }

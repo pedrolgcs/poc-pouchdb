@@ -2,20 +2,21 @@ import React, { useEffect, useState } from 'react';
 
 // utils
 import { Fake } from '../../utils/Fake';
-import { PouchRepository } from '../../utils/PouchRepository';
+import { UsersRepository } from '../../utils/PouchDB/UsersRepository';
 
 // styles
 import './styles.scss';
 
 // types
-import { UserSchema } from '../../interfaces/user';
+import { Gender, UserSchema } from '../../interfaces/user';
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<UserSchema[]>([]);
 
   useEffect(() => {
     async function loadUsers() {
-      const response = await PouchRepository.list();
+      const response = await UsersRepository.list();
+
       setUsers([...response]);
     }
 
@@ -28,9 +29,19 @@ const Home: React.FC = () => {
     const user = Fake.user();
 
     try {
-      const response = await PouchRepository.create(user);
-      const loadUser = await PouchRepository.findById(response.id);
+      const response = await UsersRepository.create(user);
+      const loadUser = await UsersRepository.findById(response.id);
       return setUsers([...users, loadUser]);
+    } catch (error) {
+      return console.log(error);
+    }
+  }
+
+  async function listByGender(gender: Gender) {
+    try {
+      const response = await UsersRepository.listByGender(gender);
+      
+      console.log(response);
     } catch (error) {
       return console.log(error);
     }
@@ -40,10 +51,21 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content">
         <h1>Cadastro de usuários</h1>
+
         <button type="button" onClick={handleSubmit}>
           Gerar novo usuários
         </button>
-        <h2>Lista de usuários</h2>
+
+        <div className="button-container">
+          <button type="button">todos</button>
+          <button type="button" onClick={() => listByGender('male')}>
+            homens
+          </button>
+          <button type="button" onClick={() => listByGender('female')}>
+            mulheres
+          </button>
+        </div>
+
         <ul>
           {users.map((user) => (
             <div key={user._id}>
@@ -60,10 +82,7 @@ const Home: React.FC = () => {
                 <span>Email:</span> {user.user.email}
               </li>
               <li>
-                <span>Situation:</span> {user.situation}
-              </li>
-              <li>
-                <span>Trocar situação: </span>
+                <span>Gênero:</span> {user.user.gender}
               </li>
               <hr />
             </div>

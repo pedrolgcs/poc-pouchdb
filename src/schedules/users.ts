@@ -1,12 +1,12 @@
 import schedule from 'node-schedule';
 
 // utils
-import { PouchRepository } from '../utils/PouchRepository';
+import { UsersRepository } from '../utils/PouchDB/UsersRepository';
 
 async function processUsers(): Promise<void> {
   console.log('[schedule] - started');
 
-  const users = await PouchRepository.listBySituation('pending');
+  const users = await UsersRepository.listByGender('male');
 
   if (users.length <= 0) {
     console.log('[schedule] - nothing to do');
@@ -16,16 +16,14 @@ async function processUsers(): Promise<void> {
   users.forEach(async (user) => {
     try {
       console.log('[api] - request success');
-      await PouchRepository.update({
+      await UsersRepository.update({
         ...user,
-        situation: 'success',
       });
       console.log('[database] - update in database');
     } catch (error) {
       console.log('[api] - request failed');
-      await PouchRepository.update({
+      await UsersRepository.update({
         ...user,
-        situation: 'failed',
       });
       console.log('[database] - update in database');
     }

@@ -7,8 +7,10 @@ import { UserSchema } from '../interfaces/user';
 // plugins
 PouchDB.plugin(pouchdbFind);
 
-var pouchDB = new PouchDB<UserSchema>('durga', {
+const pouchDB = new PouchDB<UserSchema>('my-database', {
   adapter: 'idb',
 });
+
+// pouchDB.getIndexes().then((result) => console.log(result));
 
 export { pouchDB };
